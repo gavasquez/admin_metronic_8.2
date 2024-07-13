@@ -23,6 +23,7 @@ export class CreateCategorieComponent implements OnInit  {
 
   categories_first: any = [];
   categories_second: any = [];
+  categories_second_back: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -75,6 +76,14 @@ export class CreateCategorieComponent implements OnInit  {
 
   changeTypeCategorie(value: number){
     this.type_categorie = value;
+    this.form.patchValue({
+      categorie_second_id: '', // Limpiamos el campo
+      categorie_third_id: '',
+    });
+  }
+
+  changeDeparmento(){
+    this.categories_second_back = this.categories_second.filter((item: any) => item.categorie_second_id == this.form.get('categorie_third_id')!.value);
   }
 
   onSubmit(){
@@ -130,7 +139,7 @@ export class CreateCategorieComponent implements OnInit  {
     const formData = new FormData();
     formData.append("type_categorie", `${this.type_categorie}`);
     formData.append("name", name);
-    formData.append("icon", icon);
+    icon ? formData.append("icon", icon) : null;
     formData.append("position", position);
     if(categorie_second_id){
       formData.append("categorie_second_id", categorie_second_id);

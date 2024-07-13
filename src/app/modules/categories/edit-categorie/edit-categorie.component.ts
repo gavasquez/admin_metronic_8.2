@@ -22,6 +22,8 @@ export class EditCategorieComponent implements OnInit {
   categories_second: any = [];
 
   categorie_id: string = '';
+  categorie: any = '';
+  categories_second_back: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -41,6 +43,7 @@ export class EditCategorieComponent implements OnInit {
     });
 
     this.categorieService.showCategorie(this.categorie_id).subscribe((resp: any) => {
+      this.categorie = resp.categorie;
       const { name, icon, imagen, categorie_second_id, categorie_third_id, position, type_categorie, state } = resp.categorie;
        this.form.setValue({
           name,
@@ -95,6 +98,14 @@ export class EditCategorieComponent implements OnInit {
 
   changeTypeCategorie(value: number){
     this.type_categorie = value;
+    this.form.patchValue({
+      categorie_second_id: '', // Limpiamos el campo
+      categorie_third_id: '',
+    });
+  }
+
+  changeDeparmento(){
+    this.categories_second_back = this.categories_second.filter((item: any) => item.categorie_second_id == this.form.get('categorie_third_id')!.value);
   }
 
   onSubmit(){
@@ -140,7 +151,13 @@ export class EditCategorieComponent implements OnInit {
   formDataCreate({ name, icon, position, categorie_second_id, categorie_third_id }: any){
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("icon", icon);
+    if(icon){
+      formData.append("icon", icon);
+    }else {
+      if(this.categorie.icon){
+        formData.append("icon", '');
+      }
+    }
     formData.append("position", position);
     if(categorie_second_id){
       formData.append("categorie_second_id", categorie_second_id);

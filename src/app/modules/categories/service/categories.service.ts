@@ -22,7 +22,7 @@ export class CategoriesService {
   }
 
 
-  listCategories(page: number = 1,search: string){
+  listCategories(page: number = 1, search: string){
     this.isLoadingSubject.next(true);
     let URL = URL_SERVICIOS + "/admin/categories?page="+page+"&search="+search;
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
@@ -80,9 +80,9 @@ export class CategoriesService {
 
   deleteCategorie(categorie_id: string){
     this.isLoadingSubject.next(true);
-    let URL = URL_SERVICIOS + "/admin/categories" + categorie_id;
+    let URL = URL_SERVICIOS + "/admin/categories/" + categorie_id;
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
-    return this.http.delete(URL, {
+    return this.http.delete<{message: number}>(URL, {
       headers,
     }).pipe(
       finalize(() => this.isLoadingSubject.next(false)),
