@@ -57,6 +57,11 @@ const Routing: Routes = [
     path: 'attributes',
     loadChildren: () => import('../modules/attributes/attributes.module').then((m) => m.AttributesModule),
   },
+  // TODO: Sliders
+  {
+    path: 'sliders',
+    loadChildren: () => import('../modules/slider/slider.module').then((m)=> m.SliderModule),
+  },
   {
     path: '',
     redirectTo: '/dashboard',

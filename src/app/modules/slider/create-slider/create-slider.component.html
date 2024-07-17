@@ -1,0 +1,48 @@
+<div class="card">
+  <!--begin::Card body-->
+  <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+  <div class="card-body pt-9 pb-0">
+    <form [formGroup]="form" (submit)="onSubmit()">
+    <div class="row mb-6">
+          <div class="col-lg-12 fv-row fv-plugins-icon-container">
+            <label class="fw-semibold fs-6 py-2 ">Titulo: (*)</label>
+            <input type="text" name="title" class="form-control form-control-lg form-control-solid" placeholder="Por ejemplo: The best note book collection 2023" formControlName="title">
+          </div>
+          <div class="col-lg-6 fv-row fv-plugins-icon-container">
+            <label class="fw-semibold fs-6 py-2 ">Label: (Opcional)</label>
+            <input type="text" name="label" class="form-control form-control-lg form-control-solid" placeholder="Por ejemplo: Starting at 9900" formControlName="label">
+          </div>
+          <div class="col-lg-6 fv-row fv-plugins-icon-container">
+            <label class="fw-semibold fs-6 py-2 ">Subtitulo: (*)</label>
+            <input type="text" name="subtitle" class="form-control form-control-lg form-control-solid" placeholder="Por ejemplo: Exclusive offer 9900" formControlName="subtitle">
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-sm-12 my-2 mt-3">
+            <label class="form-label">Sube tu imagen: </label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile"  accept=".jpeg, .bmp, .jpg, .png, .gif, .webp"  (change)="processFile($event)">
+            </div>
+            <div>
+              <img class="img py-4" [src]="imagen_previsualiza" alt="Image" width="200">
+            </div>
+          </div>
+          <div class="col-lg-6 fv-row fv-plugins-icon-container mt-3">
+            <label class="fw-semibold fs-6 py-2 ">Link: (Opcional)</label>
+            <input type="text" name="link" class="form-control form-control-lg form-control-solid" placeholder="Por ejemplo: http://dominio.com" formControlName="link">
+          </div>
+
+          <div class="col-lg-6 fv-row fv-plugins-icon-container mt-3 mb-5">
+            <label class="fw-semibold fs-6 py-2 ">Color: (Opcional)</label>
+            <input class="form-control p-5" type="color" id="code" name="color" formControlName="color" />
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-3">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
+  <!--end::Card body-->
+</div>
