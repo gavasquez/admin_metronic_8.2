@@ -19,6 +19,21 @@ export class ListsProductComponent implements OnInit{
 
   isLoading$: any;
 
+  // Search
+  marcas: any[] = [];
+  marca_id: string = '';
+
+  categories_first: any[] = [];
+  categorie_first_id: string = '';
+
+  categorie_second_id: string = '';
+  categories_second_back: any[] = [];
+  categories_second: any[] = [];
+
+  categorie_third_id: string = '';
+  categories_thirds_back: any[] = [];
+  categories_thirds: any[] = [];
+
   constructor(
     public productsService: ProductService,
     public modalService: NgbModal,
@@ -27,10 +42,18 @@ export class ListsProductComponent implements OnInit{
   ngOnInit(): void {
     this.listSliders();
     this.isLoading$ = this.productsService.isLoading$;
+    this.configAll();
   }
 
   listSliders(page: number = 1){
-    this.productsService.list(page, this.search).subscribe(({ products, total }: ResponseProducts) => {
+    let data = {
+      search: this.search,
+      brand_id: this.marca_id,
+      categorie_first_id: this.categorie_first_id,
+      categorie_second_id: this.categorie_second_id,
+      categorie_third_id: this.categorie_third_id,
+    }
+    this.productsService.list(page, data).subscribe(({ products, total }: ResponseProducts) => {
       this.currentPage = page;
       this.products = products.data;
       this.totalPages = total;
@@ -53,6 +76,25 @@ export class ListsProductComponent implements OnInit{
       if(index != -1){
         this.products.splice(index, 1);
       }
-    })
+    });
   }
+
+  configAll(){
+    this.productsService.configAll().subscribe((resp: any) => {
+      this.marcas = resp.brands;
+      this.categories_first = resp.categories_first;
+      this.categories_second = resp.categories_second;
+      this.categories_thirds = resp.categories_thirds;
+    });
+  }
+
+
+  changeDeparmento(){
+    this.categories_second_back = this.categories_second.filter((item: any) => item.categorie_second_id == this.categorie_first_id);
+  }
+
+  changeCategoria(){
+    this.categories_thirds_back = this.categories_thirds.filter((item: any) => item.categorie_second_id == this.categorie_second_id);
+  }
+
 }

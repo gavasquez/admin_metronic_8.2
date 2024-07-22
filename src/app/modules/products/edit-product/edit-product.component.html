@@ -1,1 +1,265 @@
-<p>edit-product works!</p>
+<div class="card">
+  <!--begin::Card body-->
+  <span
+    class="spinner-border spinner-border-sm align-middle ms-2"
+    *ngIf="isLoading$ | async"
+  ></span>
+  <div class="card-body pt-9 pb-0">
+    <form [formGroup]="form" (submit)="onSubmit()">
+      <div class="row mb-6">
+        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+          <label class="fw-semibold fs-6 py-2">Titulo: (*)</label>
+          <input
+            type="text"
+            name="title"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="Por ejemplo: The best note book collection 2023"
+            formControlName="title"
+          />
+        </div>
+
+        <div class="col-lg-4 fv-row fv-plugins-icon-container">
+          <label class="fw-semibold fs-6 py-2">Sku: (*)</label>
+          <input
+            type="text"
+            name="sku"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="Por ejemplo: ZDR456"
+            formControlName="sku"
+          />
+        </div>
+
+        <div class="col-lg-4 fv-row fv-plugins-icon-container mt-3">
+          <label class="fw-semibold fs-6 py-2">Precio COL: (*)</label>
+          <input
+            type="number"
+            name="price_col"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="Por ejemplo: $100.000"
+            formControlName="price_col"
+          />
+        </div>
+
+        <div class="col-lg-4 fv-row fv-plugins-icon-container mt-3">
+          <label class="fw-semibold fs-6 py-2">Precio USD: (*)</label>
+          <input
+            type="number"
+            name="price_usd"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="Por ejemplo: $40 USD"
+            formControlName="price_usd"
+          />
+        </div>
+        <div class="col-lg-4 fv-row fv-plugins-icon-container mt-3">
+          <label class="fw-semibold fs-6 py-2">Marcas: (*)</label>
+          <select
+            class="form-control form-select-solid fw-bolder"
+            name="marca"
+            placeholder="Selec. Marcas"
+            formControlName="marca_id"
+          >
+            <option value="">Seleccione...</option>
+            <option *ngFor="let item of marcas" [value]="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <label class="fw-semibold fs-6 py-2"
+              >Departamento:(Primer nivel)</label
+            >
+            <select
+              class="form-control form-select-solid fw-bolder"
+              name="categorie_first_id"
+              placeholder="Selec. Departamento"
+              formControlName="categorie_first_id"
+              (change)="changeDeparmento()"
+            >
+              <option value="">Seleccione...</option>
+              <option *ngFor="let item of categories_first" [value]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-4">
+            <label class="fw-semibold fs-6 py-2"
+              >Categoria:(Segundo nivel(Opcional))</label
+            >
+            <select
+              class="form-control form-select-solid fw-bolder"
+              name="categorie_second_id"
+              placeholder="Selec. Departamento"
+              formControlName="categorie_second_id"
+              (change)="changeCategoria()"
+            >
+              <option value="">Seleccione...</option>
+              <option
+                *ngFor="let item of categories_second_back"
+                [value]="item.id"
+              >
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-4">
+            <label class="fw-semibold fs-6 py-2"
+              >Sub Categoria:(Tercer nivel(Opcional))</label
+            >
+            <select
+              class="form-control form-select-solid fw-bolder"
+              name="categorie_third_id"
+              placeholder="Selec. Departamento"
+              formControlName="categorie_third_id"
+            >
+              <option value="">Seleccione...</option>
+              <option
+                *ngFor="let item of categories_thirds_back"
+                [value]="item.id"
+              >
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 my-2 mt-3">
+          <label class="form-label">Sube tu imagen: </label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFile"
+              accept=".jpeg, .bmp, .jpg, .png, .gif, .webp"
+              (change)="processFile($event)"
+            />
+          </div>
+          <div>
+            <img
+              class="img py-4"
+              [src]="imagen_previsualiza"
+              alt="Image"
+              width="200"
+            />
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 my-2 mt-3">
+          <div class="row">
+            <div class="col-8">
+              <label class="form-label">Sube tus imagenes: </label>
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="customFileImages"
+                  accept=".jpeg, .bmp, .jpg, .png, .gif, .webp"
+                  (change)="processFiles($event)"
+                />
+              </div>
+              <div>
+                <img
+                  class="img py-4"
+                  [src]="imagen_add_previsualiza"
+                  alt="Image"
+                  width="100"
+                />
+              </div>
+            </div>
+            <div class="col-4">
+              <button type="button" class="btn btn-primary btn-sm" (click)="addImagen()">+</button>
+            </div>
+            <div class="col-12">
+              <div
+                id="kt_table_users_wrapper"
+                class="dt-container dt-bootstrap5 dt-empty-footer"
+              >
+                <div class="table-responsive w-100">
+                  <table
+                    class="table align-middle table-row-dashed fs-6 gy-5 dataTable"
+                    id="kt_advance_table_widget_1"
+                  >
+                    <thead>
+                      <tr class="text-left">
+                        <th>IMAGEN</th>
+                        <th>ACCIÓN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of images_files; let i = index">
+                        <td>
+                          <img width="60" [src]="item.imagen"/>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            class="ml-5 btn btn-sm btn-danger"
+                            (click)="removeImages(item.id)"
+                          >
+                            X
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <label class="fw-semibold fs-6 py-2">Word: (*)</label>
+            <input
+              type="text"
+              name="word"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="Por ejemplo: ZDR456"
+              formControlName="word"
+              (keydown.enter)="addItems($event)"
+            />
+          </div>
+          <div class="col-6 h-100" *ngIf="!isShowMultiselect">
+            <label class="fw-semibold fs-6 py-2">Tags: </label>
+            <ng-multiselect-dropdown
+              [placeholder]="'custom placeholder'"
+              [settings]="dropdownSettings"
+              [data]="dropdownList"
+              formControlName="selectedItems"
+              (onSelect)="onItemSelect($event)"
+              (onSelectAll)="onSelectAll($event)"
+            >
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+
+        <div class="col-lg-8 fv-row fv-plugins-icon-container mt-3 mb-3">
+          <label class="fw-semibold fs-6 py-2">Descripción: </label>
+          <textarea
+            class="form-control"
+            name="description"
+            formControlName="description"
+            placeholder="Ad Lorem non nostrud magna amet pariatur aute..."
+          ></textarea>
+        </div>
+        <div class="col-lg-4 fv-row fv-plugins-icon-container mt-3 mb-3">
+          <label class="fw-semibold fs-6 py-2">Resumen: </label>
+          <textarea
+            class="form-control"
+            name="resumen"
+            formControlName="resumen"
+            placeholder="Cupidatat proident fugiat reprehenderit..."
+          ></textarea>
+        </div>
+        <div class="row mb-3">
+          <div class="col-3">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--end::Card body-->
+</div>

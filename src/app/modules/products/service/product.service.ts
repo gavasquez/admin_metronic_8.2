@@ -4,6 +4,8 @@ import { BehaviorSubject, finalize, Observable } from 'rxjs';
 import { AuthService } from '../../auth';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { ResponseProducts } from '../interfaces/response-products.interfaces';
+import { Product } from '../interfaces/product.interface';
+import { ResponseShowProduct } from '../interfaces/response-show-product.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +24,11 @@ export class ProductService {
   }
 
 
-  list(page: number = 1, search: string){
+  list(page: number = 1, data: any){
     this.isLoadingSubject.next(true);
-    let URL = URL_SERVICIOS + "/admin/products?page="+page+"&search="+search;
+    let URL = URL_SERVICIOS + "/admin/products/index?page="+page;
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
-    return this.http.get<ResponseProducts>(URL, {
+    return this.http.post<ResponseProducts>(URL, data, {
       headers,
     }).pipe(
       finalize(() => this.isLoadingSubject.next(false)),
@@ -71,7 +73,7 @@ export class ProductService {
     this.isLoadingSubject.next(true);
     let URL = URL_SERVICIOS + "/admin/products/"+id;
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
-    return this.http.post(URL, data, {
+    return this.http.post<ResponseShowProduct>(URL, data, {
       headers,
     }).pipe(
       finalize(() => this.isLoadingSubject.next(false)),
@@ -90,5 +92,26 @@ export class ProductService {
   }
 
 
+  imagenAdd(data:any){
+    this.isLoadingSubject.next(true);
+    let URL = URL_SERVICIOS + "/admin/products/imagens";
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    return this.http.post<{message: number}>(URL, data, {
+      headers,
+    }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    );
+  }
+
+  deleteImage(id: string) {
+    this.isLoadingSubject.next(true);
+    let URL = URL_SERVICIOS + `/admin/products/imagens/${id}`;
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    return this.http.delete<{message: number}>(URL, {
+      headers,
+    }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    );
+  }
 
 }

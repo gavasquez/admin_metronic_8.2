@@ -8,21 +8,33 @@ export interface Product {
   description:         string;
   resumen:             string;
   imagen:              string;
-  tags:                string;
+  tags:                Tag[];
   brand_id:            number;
   brand:               Brand;
   categorie_first_id:  number;
   categorie_first:     Brand;
-  categorie_second_id: number | null;
-  categorie_second:    Brand | null;
-  categorie_third_id:  number | null;
-  categorie_third:     Brand | null;
+  categorie_second_id: number;
+  categorie_second:    Brand;
+  categorie_third_id:  number;
+  categorie_third:     Brand;
   stock:               number;
   state:               string;
   created_at:          Date;
+  images:              Image[];
 }
 
 export interface Brand {
   id:   number;
-  name: string;
+  name: string
+}
+
+export interface Tag {
+  item_id:   number;
+  item_text: string;
+}
+
+
+export interface Image {
+  id:     number;
+  imagen: string;
 }
