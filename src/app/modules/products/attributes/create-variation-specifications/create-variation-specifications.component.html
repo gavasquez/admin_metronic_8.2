@@ -1,0 +1,70 @@
+<div class="card">
+  <!--begin::Card body-->
+  <span
+    class="spinner-border spinner-border-sm align-middle ms-2"
+    *ngIf="isLoading$ | async"
+  ></span>
+  <div class="card-body pt-9 pb-0">
+    <form [formGroup]="form" (submit)="onSubmit()">
+      <div class="row mb-6">
+        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+          <label class="fw-semibold fs-6 py-2">Titulo: (*)</label>
+          <input
+            type="text"
+            name="title"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="Por ejemplo: The best note book collection 2023"
+            formControlName="title"
+            [disabled]="true"
+          />
+        </div>
+
+        <div class="col-lg-4 fv-row fv-plugins-icon-container">
+          <label class="fw-semibold fs-6 py-2">Sku: (*)</label>
+          <input
+            type="text"
+            name="sku"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="Por ejemplo: ZDR456"
+            formControlName="sku"
+            [disabled]="true"
+          />
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-6">
+            <label class="fw-semibold fs-6 py-2">Especificaciones: (*)</label>
+            <div class="row">
+              <div class="col-12">
+                <!-- Formularios -->
+              </div>
+              <!-- Tabla de las especificaciones seleccionadas para el producto -->
+              <div class="col-12">
+
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="fw-semibold fs-6 py-2">Variaciones: (*)</label>
+            <div class="row">
+              <div class="col-12">
+                <!-- Formularios -->
+              </div>
+              <!-- Tabla de las variaciones seleccionadas para el producto -->
+              <div class="col-12">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-3">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--end::Card body-->
+</div>
